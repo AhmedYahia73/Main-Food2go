@@ -41,8 +41,8 @@ class ProductImport implements ToModel, WithHeadingRow
         // variations2_option3_status, variations2_option3_points
         Product::where('id', $row['id'])
         ->update([
-            'name' => $row['name'],
-            'description' => $row['description'],
+            'name' => $row['name'] ?? null,
+            'description' => $row['description'] ?? null,
             'item_type' => $row['item_type'],
             'stock_type' => $row['stock_type'],
             'number' => $row['number'],
@@ -57,8 +57,8 @@ class ProductImport implements ToModel, WithHeadingRow
             ->update([
                 'name' => $row['variations1_name'],
                 'type' => $row['variations1_type'],
-                'min' => $row['variations1_min'],
-                'max' => $row['variations1_max'],
+                'min' => is_numeric($row['variations1_min']) ? $row['variations1_min']: null,
+                'max' => is_numeric($row['variations1_max']) ? $row['variations1_max']: null, 
                 'required' => $row['variations1_required'], 
             ]);
             if (isset($row['variations1_option1_id']) && is_numeric($row['variations1_option1_id'])) {
@@ -67,7 +67,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations1_option1_name'],
                     'price' => $row['variations1_option1_price'],
                     'status' => $row['variations1_option1_status'],
-                    'points' => $row['variations1_option1_points'],
+                    'points' => is_numeric($row['variations1_option1_points']) ?$row['variations1_option1_points']  :0,
                 ]);
             }
             elseif (!empty($row['variations1_option1_name'])) {  
@@ -75,7 +75,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations1_option1_name'],
                     'price' => $row['variations1_option1_price'],
                     'status' => $row['variations1_option1_status'],
-                    'points' => $row['variations1_option1_points'],
+                    'points' => is_numeric($row['variations1_option1_points']) ?$row['variations1_option1_points']  :0,
                     'product_id' => $row['id'], 
                     'variation_id' => $row['variations1_id'], 
                 ]);
@@ -88,7 +88,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations1_option2_name'],
                     'price' => $row['variations1_option2_price'],
                     'status' => $row['variations1_option2_status'],
-                    'points' => $row['variations1_option2_points'],
+                    'points' => is_numeric($row['variations1_option2_points']) ?$row['variations1_option2_points']  :0,
                 ]);
             }
             elseif (!empty($row['variations1_option2_name'])) {  
@@ -96,7 +96,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations1_option2_name'],
                     'price' => $row['variations1_option2_price'],
                     'status' => $row['variations1_option2_status'],
-                    'points' => $row['variations1_option2_points'],
+                    'points' => is_numeric($row['variations1_option2_points']) ?$row['variations1_option2_points']  :0,
                     'product_id' => $row['id'], 
                     'variation_id' => $row['variations1_id'], 
                 ]);
@@ -109,7 +109,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations1_option3_name'],
                     'price' => $row['variations1_option3_price'],
                     'status' => $row['variations1_option3_status'],
-                    'points' => $row['variations1_option3_points'],
+                    'points' => is_numeric($row['variations1_option3_points']) ?$row['variations1_option3_points']  :0,
                 ]);
             }
             elseif (!empty($row['variations1_option3_name'])) {  
@@ -117,7 +117,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations1_option3_name'],
                     'price' => $row['variations1_option3_price'],
                     'status' => $row['variations1_option3_status'],
-                    'points' => $row['variations1_option3_points'],
+                    'points' => is_numeric($row['variations1_option3_points']) ?$row['variations1_option3_points']  :0,
                     'product_id' => $row['id'], 
                     'variation_id' => $row['variations1_id'], 
                 ]);
@@ -127,9 +127,9 @@ class ProductImport implements ToModel, WithHeadingRow
             $variation = VariationProduct::
             create([
                 'name' => $row['variations1_name'],
-                'type' => $row['variations1_type'],
-                'min' => $row['variations1_min'],
-                'max' => $row['variations1_max'],
+                'type' => $row['variations1_type'], 
+                'min' => empty($row['variations1_min']) ? null: $row['variations1_min'],
+                'max' => empty($row['variations1_max']) ? null: $row['variations1_max'],
                 'required' => $row['variations1_required'], 
                 'product_id' => $row['id'], 
             ]);
@@ -138,7 +138,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations1_option1_name'],
                     'price' => $row['variations1_option1_price'],
                     'status' => $row['variations1_option1_status'],
-                    'points' => $row['variations1_option1_points'],
+                    'points' => is_numeric($row['variations1_option1_points']) ?$row['variations1_option1_points']  :0,
                     'product_id' => $row['id'], 
                     'variation_id' => $variation->id, 
                 ]);
@@ -148,7 +148,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations1_option2_name'],
                     'price' => $row['variations1_option2_price'],
                     'status' => $row['variations1_option2_status'],
-                    'points' => $row['variations1_option2_points'],
+                    'points' => is_numeric($row['variations1_option2_points']) ?$row['variations1_option2_points']  :0,
                     'product_id' => $row['id'],  
                     'variation_id' => $variation->id, 
                 ]);
@@ -158,7 +158,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations1_option3_name'],
                     'price' => $row['variations1_option3_price'],
                     'status' => $row['variations1_option3_status'],
-                    'points' => $row['variations1_option3_points'],
+                    'points' => is_numeric($row['variations1_option3_points']) ?$row['variations1_option3_points']  :0,
                     'product_id' => $row['id'], 
                     'variation_id' => $variation->id, 
                 ]);
@@ -170,8 +170,8 @@ class ProductImport implements ToModel, WithHeadingRow
             ->update([
                 'name' => $row['variations2_name'],
                 'type' => $row['variations2_type'],
-                'min' => $row['variations2_min'],
-                'max' => $row['variations2_max'],
+                'min' => empty($row['variations2_min']) ? null: $row['variations2_min'],
+                'max' => empty($row['variations2_max']) ? null: $row['variations2_max'],
                 'required' => $row['variations2_required'], 
             ]);
             if (isset($row['variations2_option1_id']) && is_numeric($row['variations2_option1_id'])) {
@@ -180,7 +180,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations2_option1_name'],
                     'price' => $row['variations2_option1_price'],
                     'status' => $row['variations2_option1_status'],
-                    'points' => $row['variations2_option1_points'],
+                    'points' => is_numeric($row['variations2_option1_points']) ?$row['variations2_option1_points']  :0,
                 ]);
             }
             elseif (!empty($row['variations2_option1_name'])) {  
@@ -188,7 +188,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations2_option1_name'],
                     'price' => $row['variations2_option1_price'],
                     'status' => $row['variations2_option1_status'],
-                    'points' => $row['variations2_option1_points'],
+                    'points' => is_numeric($row['variations2_option1_points']) ?$row['variations2_option1_points']  :0,
                     'product_id' => $row['id'], 
                     'variation_id' => $row['variations2_id'], 
                 ]);
@@ -201,7 +201,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations2_option2_name'],
                     'price' => $row['variations2_option2_price'],
                     'status' => $row['variations2_option2_status'],
-                    'points' => $row['variations2_option2_points'],
+                    'points' => is_numeric($row['variations2_option2_points']) ?$row['variations2_option2_points']  :0,
                 ]);
             }
             elseif (!empty($row['variations2_option2_name'])) {  
@@ -209,7 +209,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations2_option2_name'],
                     'price' => $row['variations2_option2_price'],
                     'status' => $row['variations2_option2_status'],
-                    'points' => $row['variations2_option2_points'],
+                    'points' => is_numeric($row['variations2_option2_points']) ?$row['variations2_option2_points']  :0,
                     'product_id' => $row['id'], 
                     'variation_id' => $row['variations2_id'], 
                 ]);
@@ -222,7 +222,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations2_option3_name'],
                     'price' => $row['variations2_option3_price'],
                     'status' => $row['variations2_option3_status'],
-                    'points' => $row['variations2_option3_points'],
+                    'points' => is_numeric($row['variations2_option3_points']) ?$row['variations2_option3_points']  :0,
                 ]);
             }
             elseif (!empty($row['variations2_option3_name'])) {  
@@ -230,7 +230,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations2_option3_name'],
                     'price' => $row['variations2_option3_price'],
                     'status' => $row['variations2_option3_status'],
-                    'points' => $row['variations2_option3_points'],
+                    'points' => is_numeric($row['variations2_option3_points']) ?$row['variations2_option3_points']  :0,
                     'product_id' => $row['id'], 
                     'variation_id' => $row['variations2_id'], 
                 ]);
@@ -240,9 +240,9 @@ class ProductImport implements ToModel, WithHeadingRow
             $variation = VariationProduct::
             create([
                 'name' => $row['variations2_name'],
-                'type' => $row['variations2_type'],
-                'min' => $row['variations2_min'],
-                'max' => $row['variations2_max'],
+                'type' => $row['variations2_type'], 
+                'min' => empty($row['variations2_min']) ? null: $row['variations2_min'],
+                'max' => empty($row['variations2_max']) ? null: $row['variations2_max'], 
                 'required' => $row['variations2_required'], 
                 'product_id' => $row['id'], 
             ]);
@@ -251,7 +251,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations2_option1_name'],
                     'price' => $row['variations2_option1_price'],
                     'status' => $row['variations2_option1_status'],
-                    'points' => $row['variations2_option1_points'],
+                    'points' => is_numeric($row['variations2_option1_points']) ?$row['variations2_option1_points']  :0,
                     'product_id' => $row['id'], 
                     'variation_id' => $variation->id, 
                 ]);
@@ -261,7 +261,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations2_option2_name'],
                     'price' => $row['variations2_option2_price'],
                     'status' => $row['variations2_option2_status'],
-                    'points' => $row['variations2_option2_points'],
+                    'points' => is_numeric($row['variations2_option2_points']) ?$row['variations2_option2_points']  :0,
                     'product_id' => $row['id'],  
                     'variation_id' => $variation->id, 
                 ]);
@@ -271,7 +271,7 @@ class ProductImport implements ToModel, WithHeadingRow
                     'name' => $row['variations2_option3_name'],
                     'price' => $row['variations2_option3_price'],
                     'status' => $row['variations2_option3_status'],
-                    'points' => $row['variations2_option3_points'],
+                    'points' => is_numeric($row['variations2_option3_points']) ?$row['variations2_option3_points']  :0,
                     'product_id' => $row['id'], 
                     'variation_id' => $variation->id, 
                 ]);
