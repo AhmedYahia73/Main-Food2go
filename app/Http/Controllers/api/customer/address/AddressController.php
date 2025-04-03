@@ -34,13 +34,14 @@ class AddressController extends Controller
         ->with('address.zone')
         ->first()->address; 
         $zones = $this->zones->get();
-        $branch = $this->branch
+        $branches = $this->branch
         ->where('status', 1)
         ->get();
 
         return response()->json([
             'addresses' => $addresses,
             'zones' => $zones,
+            'branches' => $branches,
         ]);
     }
 
